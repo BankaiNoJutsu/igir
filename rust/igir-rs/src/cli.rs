@@ -70,6 +70,15 @@ pub struct Cli {
     pub dat_combine: bool,
     #[arg(long = "dat-ignore-parent-clone")]
     pub dat_ignore_parent_clone: bool,
+    /// Enable Hasheous lookups for unmatched ROMs
+    #[arg(long = "enable-hasheous")]
+    pub enable_hasheous: bool,
+    /// IGDB client id for online matching of unmatched ROMs
+    #[arg(long = "igdb-client-id", value_name = "ID")]
+    pub igdb_client_id: Option<String>,
+    /// IGDB token for online matching of unmatched ROMs
+    #[arg(long = "igdb-token", value_name = "TOKEN")]
+    pub igdb_token: Option<String>,
 
     // Patch input options
     #[arg(short = 'p', long = "patch", value_name = "PATH", action = ArgAction::Append)]

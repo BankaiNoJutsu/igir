@@ -118,4 +118,6 @@ pub struct ExecutionPlan {
     pub config: crate::config::Config,
     pub steps: Vec<ActionOutcome>,
     pub files_processed: usize,
+    pub dat_unmatched: Vec<crate::dat::DatRom>,
+    pub online_matches: Vec<crate::dat::OnlineMatch>,
 }

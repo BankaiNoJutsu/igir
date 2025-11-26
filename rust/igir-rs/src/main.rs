@@ -2,6 +2,7 @@ mod actions;
 mod checksum;
 mod cli;
 mod config;
+mod dat;
 mod records;
 mod types;
 mod utils;

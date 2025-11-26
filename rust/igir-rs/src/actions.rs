@@ -7,6 +7,7 @@ use anyhow::Context;
 use zip::write::FileOptions;
 
 use crate::config::Config;
+use crate::dat::{dat_unmatched, load_dat_roms, online_lookup};
 use crate::records::{collect_files, ensure_parent, resolve_output_path};
 use crate::types::{
     Action, ActionOutcome, ChecksumSet, ExecutionPlan, FileRecord, LinkMode, ZipFormat,
@@ -284,6 +285,9 @@ pub fn clean_output(records: &[FileRecord], config: &Config) -> anyhow::Result<V
 
 pub fn perform_actions(config: &Config) -> anyhow::Result<ExecutionPlan> {
     let records = collect_files(config)?;
+    let dat_roms = load_dat_roms(config)?;
+    let (unmatched, matched) = dat_unmatched(&records, &dat_roms);
+    let online_matches = online_lookup(&unmatched, config)?;
     let mut steps = Vec::new();
 
     for action in &config.commands {
@@ -388,9 +392,28 @@ pub fn perform_actions(config: &Config) -> anyhow::Result<ExecutionPlan> {
         }
     }
 
+    if !dat_roms.is_empty() {
+        steps.push(ActionOutcome {
+            action: Action::Fixdat,
+            status: "info".to_string(),
+            note: format!(
+                "Matched {} DAT roms, {} unmatched{}",
+                matched,
+                unmatched.len(),
+                if !online_matches.is_empty() {
+                    format!("; {} online hints", online_matches.len())
+                } else {
+                    String::new()
+                }
+            ),
+        });
+    }
+
     Ok(ExecutionPlan {
         config: config.clone(),
         steps,
         files_processed: records.len(),
+        dat_unmatched: unmatched,
+        online_matches,
     })
 }
