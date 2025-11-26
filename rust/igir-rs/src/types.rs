@@ -103,6 +103,7 @@ pub struct FileRecord {
     pub relative: PathBuf,
     pub size: u64,
     pub checksums: ChecksumSet,
+    pub letter_dir: Option<String>,
 }
 
 #[derive(Debug, Serialize)]

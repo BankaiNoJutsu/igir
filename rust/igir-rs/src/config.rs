@@ -106,6 +106,12 @@ impl Config {
             anyhow::bail!("dir-letter-limit requires --dir-letter to organize by letter");
         }
 
+        if let Some(limit) = self.dir_letter_limit {
+            if limit == 0 {
+                anyhow::bail!("dir-letter-limit must be greater than zero");
+            }
+        }
+
         if !self.dir_letter && self.dir_letter_count.is_some() {
             anyhow::bail!("dir-letter-count requires --dir-letter to organize by letter");
         }
@@ -412,6 +418,80 @@ mod tests {
             dir_letter_count: None,
             dir_letter_limit: None,
             dir_letter_group: true,
+            dir_game_subdir: DirGameSubdirMode::Multiple,
+            fix_extension: FixExtensionMode::Auto,
+            overwrite: false,
+            overwrite_invalid: false,
+            move_delete_dirs: MoveDeleteDirsMode::Auto,
+            clean_exclude: vec![],
+            clean_backup: None,
+            clean_dry_run: false,
+            zip_format: ZipFormat::Torrentzip,
+            zip_exclude: None,
+            zip_dat_name: false,
+            link_mode: LinkMode::Hardlink,
+            symlink_relative: false,
+            header: None,
+            remove_headers: None,
+            trimmed_glob: None,
+            trim_scan_archives: false,
+            merge_roms: MergeMode::Fullnonmerged,
+            merge_discs: false,
+            exclude_disks: false,
+            allow_excess_sets: false,
+            allow_incomplete_sets: false,
+            filter_regex: None,
+            filter_regex_exclude: None,
+            filter_language: None,
+            filter_region: None,
+            filter_category_regex: None,
+            no_bios: false,
+            no_device: false,
+            no_unlicensed: false,
+            only_retail: false,
+            no_debug: false,
+            no_demo: false,
+            no_beta: false,
+            no_sample: false,
+            no_prototype: false,
+            no_program: false,
+            verbose: 0,
+            quiet: 0,
+        };
+
+        let result = Config::try_from(cli);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn errors_when_letter_limit_zero() {
+        let cli = Cli {
+            commands: vec![Action::Test],
+            input: vec![PathBuf::from("/tmp/file.bin")],
+            input_exclude: vec![],
+            input_checksum_quick: false,
+            input_checksum_min: Checksum::Crc32,
+            input_checksum_max: None,
+            input_checksum_archives: ArchiveChecksumMode::Auto,
+            dat: vec![],
+            dat_exclude: vec![],
+            dat_name_regex: None,
+            dat_name_regex_exclude: None,
+            dat_description_regex: None,
+            dat_description_regex_exclude: None,
+            dat_combine: false,
+            dat_ignore_parent_clone: false,
+            patch: vec![],
+            patch_exclude: vec![],
+            output: Some(PathBuf::from("out")),
+            dir_mirror: false,
+            dir_dat_mirror: false,
+            dir_dat_name: false,
+            dir_dat_description: false,
+            dir_letter: true,
+            dir_letter_count: None,
+            dir_letter_limit: Some(0),
+            dir_letter_group: false,
             dir_game_subdir: DirGameSubdirMode::Multiple,
             fix_extension: FixExtensionMode::Auto,
             overwrite: false,
