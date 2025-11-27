@@ -4,7 +4,7 @@ use std::path::Path;
 use anyhow::Context;
 use crc32fast::Hasher as Crc32;
 use md5::{Digest as Md5Digest, Md5};
-use sha1_smol::{Digest as Sha1Digest, Sha1};
+use sha1_smol::{Digest, Sha1};
 use sha2::Sha256;
 
 use crate::config::Config;
@@ -50,9 +50,8 @@ pub fn compute_checksums(path: &Path, config: &Config) -> anyhow::Result<Checksu
                 md5 = Some(format!("{:032x}", digest));
             }
             Checksum::Sha1 => {
-                let mut hasher = Sha1::new();
-                hasher.update(&buffer);
-                sha1 = Some(format!("{:040x}", Sha1Digest::finalize(hasher)));
+                let digest = Sha1::digest(&buffer);
+                sha1 = Some(format!("{:040x}", digest));
             }
             Checksum::Sha256 => {
                 let mut hasher = Sha256::new();

@@ -1,4 +1,4 @@
-use clap::{ArgAction, Parser, ValueEnum};
+use clap::{ArgAction, Parser};
 use std::path::PathBuf;
 
 use crate::types::{
