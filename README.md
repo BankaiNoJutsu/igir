@@ -66,6 +66,8 @@ Enable online DAT lookups with:
 - `--enable-hasheous` to query Hasheous by checksum
 - `--igdb-client-id <id>` and `--igdb-token <token>` to query IGDB by DAT description or name
 
+Prefer a single copy of each title by region/language with `--filter-region EUR,USA --filter-language EN`; this will keep a European version when present, fall back to USA, then keep any remaining English-language release and skip the rest.
+
 Here is the full help message which shows all available options and a number of common use case examples:
 
 <!-- WARN: everything below is automatically updated! Update src/modules/argumentsParser.ts instead! -->
