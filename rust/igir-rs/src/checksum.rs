@@ -4,7 +4,7 @@ use std::path::Path;
 use anyhow::Context;
 use crc32fast::Hasher as Crc32;
 use md5::{Digest as Md5Digest, Md5};
-use sha1::Sha1;
+use sha1_smol::Sha1;
 use sha2::Sha256;
 
 use crate::config::Config;

@@ -36,7 +36,7 @@ pub fn load_dat_roms(config: &Config) -> anyhow::Result<Vec<DatRom>> {
     for dat_path in &config.dat {
         let mut reader = Reader::from_file(dat_path)
             .with_context(|| format!("unable to open DAT file: {}", dat_path.to_string_lossy()))?;
-        reader.trim_text(true);
+        reader.config_mut().trim_text(true);
         let mut buf = Vec::new();
 
         let mut current_description: Option<String> = None;

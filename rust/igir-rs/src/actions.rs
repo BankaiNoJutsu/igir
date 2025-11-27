@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::fs;
 use std::io::{self, Write};
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 use anyhow::Context;
 use zip::write::FileOptions;
@@ -76,7 +76,7 @@ pub fn link_record(record: &FileRecord, config: &Config) -> anyhow::Result<PathB
                 let src = if config.symlink_relative {
                     pathdiff::diff_paths(
                         &record.source,
-                        target.parent().unwrap_or_else(|| Path::new(".")),
+                        target.parent().unwrap_or_else(|| std::path::Path::new(".")),
                     )
                     .unwrap_or(record.source.clone())
                 } else {
@@ -126,6 +126,7 @@ pub fn extract_record(record: &FileRecord, config: &Config) -> anyhow::Result<Ve
                         sha1: None,
                         sha256: None,
                     },
+                    letter_dir: None,
                 },
                 config,
             );

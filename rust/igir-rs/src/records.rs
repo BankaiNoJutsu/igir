@@ -8,7 +8,7 @@ use walkdir::WalkDir;
 
 use crate::checksum::compute_checksums;
 use crate::config::Config;
-use crate::types::{ChecksumSet, DirGameSubdirMode, FileRecord};
+use crate::types::{DirGameSubdirMode, FileRecord};
 use crate::utils::build_globset;
 use regex::Regex;
 
@@ -337,7 +337,7 @@ fn language_rank(languages: &[String], preferences: &[String]) -> usize {
         .unwrap_or(preferences.len())
 }
 
-fn parse_list(raw: Option<&String>) -> Vec<String> {
+fn parse_list(raw: Option<&str>) -> Vec<String> {
     raw.map(|r| {
         r.split(',')
             .map(|entry| entry.trim().to_uppercase())
