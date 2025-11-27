@@ -1,4 +1,4 @@
-use clap::{ArgAction, Parser, ValueEnum, builder::PossibleValuesParser};
+use clap::{ArgAction, Parser, ValueEnum};
 use std::path::PathBuf;
 
 use crate::types::{
@@ -36,12 +36,11 @@ pub struct Cli {
         long = "input-checksum-min",
         value_enum,
         default_value_t = Checksum::Crc32,
-        value_parser = PossibleValuesParser::new(Checksum::value_variants()),
     )]
     pub input_checksum_min: Checksum,
 
     /// The maximum checksum level to calculate and use for matching
-    #[arg(long = "input-checksum-max", value_enum, value_parser = PossibleValuesParser::new(Checksum::value_variants()))]
+    #[arg(long = "input-checksum-max", value_enum)]
     pub input_checksum_max: Option<Checksum>,
 
     /// Calculate checksums of archive files themselves, allowing them to match files in DATs
@@ -49,7 +48,6 @@ pub struct Cli {
         long = "input-checksum-archives",
         value_enum,
         default_value_t = ArchiveChecksumMode::Auto,
-        value_parser = PossibleValuesParser::new(ArchiveChecksumMode::value_variants()),
     )]
     pub input_checksum_archives: ArchiveChecksumMode,
 
@@ -109,7 +107,6 @@ pub struct Cli {
         long = "dir-game-subdir",
         value_enum,
         default_value_t = DirGameSubdirMode::Multiple,
-        value_parser = PossibleValuesParser::new(DirGameSubdirMode::value_variants()),
     )]
     pub dir_game_subdir: DirGameSubdirMode,
 
@@ -118,7 +115,6 @@ pub struct Cli {
         long = "fix-extension",
         value_enum,
         default_value_t = FixExtensionMode::Auto,
-        value_parser = PossibleValuesParser::new(FixExtensionMode::value_variants()),
     )]
     pub fix_extension: FixExtensionMode,
     #[arg(short = 'O', long = "overwrite")]
@@ -131,7 +127,6 @@ pub struct Cli {
         long = "move-delete-dirs",
         value_enum,
         default_value_t = MoveDeleteDirsMode::Auto,
-        value_parser = PossibleValuesParser::new(MoveDeleteDirsMode::value_variants()),
     )]
     pub move_delete_dirs: MoveDeleteDirsMode,
 
@@ -148,7 +143,6 @@ pub struct Cli {
         long = "zip-format",
         value_enum,
         default_value_t = ZipFormat::Torrentzip,
-        value_parser = PossibleValuesParser::new(ZipFormat::value_variants()),
     )]
     pub zip_format: ZipFormat,
     #[arg(short = 'Z', long = "zip-exclude", value_name = "GLOB")]
@@ -161,7 +155,6 @@ pub struct Cli {
         long = "link-mode",
         value_enum,
         default_value_t = LinkMode::Hardlink,
-        value_parser = PossibleValuesParser::new(LinkMode::value_variants()),
     )]
     pub link_mode: LinkMode,
     #[arg(long = "symlink-relative")]
@@ -184,7 +177,6 @@ pub struct Cli {
         long = "merge-roms",
         value_enum,
         default_value_t = MergeMode::Fullnonmerged,
-        value_parser = PossibleValuesParser::new(MergeMode::value_variants()),
     )]
     pub merge_roms: MergeMode,
     #[arg(long = "merge-discs")]

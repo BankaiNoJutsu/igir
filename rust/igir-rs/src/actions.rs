@@ -149,7 +149,7 @@ pub fn zip_record(record: &FileRecord, config: &Config) -> anyhow::Result<PathBu
 
     let mut file = fs::File::create(&target)?;
     let mut zip = zip::ZipWriter::new(&mut file);
-    let options = match config.zip_format {
+    let options: FileOptions<'_, zip::write::ExtendedFileOptions> = match config.zip_format {
         ZipFormat::Torrentzip => {
             FileOptions::default().compression_method(zip::CompressionMethod::Stored)
         }
