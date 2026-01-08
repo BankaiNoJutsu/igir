@@ -60,11 +60,22 @@ When using [DATs](../dats/introduction.md), you can make use of console & game i
 
 - `{datName}` the matching DAT's name, similar to how the [`--dir-dat-name` option](./path-options.md) works
 - `{datDescription}` the matching DAT's description, similar to how the [`--dir-dat-description` option](./path-options.md) works
-- `{region}` each of the game's region(s) (e.g. `USA`, `EUR`, `JPN`, `WORLD`)
-- `{language}` each of the game's language(s) (e.g. `EN`, `ES`, `JA`)
+- `{region}` the game's region token (e.g. `USA`, `EUR`, `JPN`, `WORLD`). Igir derives this from
+  ROM names or metadata and falls back to `unknown-region` when no region can be detected.
+- `{language}` the game's language token (e.g. `EN`, `ES`, `JA`). Igir uses the first detected
+  language tag and falls back to `unknown-language` when nothing is known.
 - `{type}` the game's "type," one of: `Aftermarket`, `Alpha`, `Bad`, `Beta`, `BIOS`, `Demo`, `Device`, `Fixed`, `Hacked`, `Homebrew`, `Overdump`, `Pending Dump`, `Pirated`, `Prototype`, `Retail` (most games will be this), `Sample`, `Test`, `Trained`, `Translated`, `Unlicensed`
 - `{category}` the game's "category" (only some DATs provide this)
-- `{genre}` the game's "genre" (most DATs don't provide this)
+- `{genre}` the game's "genre". Igir fills this using IGDB metadata when available and
+  falls back to `unknown-genre` when no genre is known. When multiple genres are present the
+  first reported value is used for the directory name. Runs that include `--diag` now emit an
+  `igir_unknown_genres.json` file in the current working directory which lists every ROM that still
+  fell back to `unknown-genre`, along with the IGDB cache status so you can investigate stubborn
+  titles quickly. Each entry also records the exact IGDB query body plus the keyword list and
+  selection rules (`igdb_query.body`, `igdb_query.keywords`, `igdb_query.keyword_strategy`) so you
+  can see exactly what was posted to IGDB and how the search terms were derived. When a ROM already
+  has a `derived_platform`, the report includes `igdb_query.platform_hint` so you know which
+  platform token Igir attempted to target when re-querying IGDB.
 
 ## File information
 

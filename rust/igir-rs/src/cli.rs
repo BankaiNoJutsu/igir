@@ -2,8 +2,8 @@ use clap::{ArgAction, Parser};
 use std::path::PathBuf;
 
 use crate::types::{
-    Action, ArchiveChecksumMode, Checksum, DirGameSubdirMode, FixExtensionMode, LinkMode,
-    MergeMode, MoveDeleteDirsMode, ZipFormat,
+    Action, ArchiveChecksumMode, Checksum, DirGameSubdirMode, FixExtensionMode, IgdbLookupMode,
+    LinkMode, MergeMode, MoveDeleteDirsMode, ZipFormat,
 };
 
 #[derive(Parser, Debug, serde::Serialize)]
@@ -11,7 +11,7 @@ use crate::types::{
     name = "igir",
     version,
     about = "Rust rewrite of Igir ROM collection manager",
-    long_about = "This CLI mirrors Igir's multi-command interface and performs on-disk actions with a focus on parity to the original Node.js implementation."
+    long_about = include_str!("help_examples.md")
 )]
 pub struct Cli {
     /// Commands to run (can specify multiple)
@@ -68,15 +68,47 @@ pub struct Cli {
     pub dat_combine: bool,
     #[arg(long = "dat-ignore-parent-clone")]
     pub dat_ignore_parent_clone: bool,
+    /// Include unmatched DAT entries in the printed execution plan JSON
+    #[arg(long = "list-unmatched-dats")]
+    pub list_unmatched_dats: bool,
     /// Enable Hasheous lookups for unmatched ROMs
     #[arg(long = "enable-hasheous")]
     pub enable_hasheous: bool,
     /// IGDB client id for online matching of unmatched ROMs
     #[arg(long = "igdb-client-id", value_name = "ID")]
     pub igdb_client_id: Option<String>,
+    /// IGDB client secret used to automatically obtain OAuth tokens when needed
+    #[arg(long = "igdb-client-secret", value_name = "SECRET")]
+    pub igdb_client_secret: Option<String>,
     /// IGDB token for online matching of unmatched ROMs
     #[arg(long = "igdb-token", value_name = "TOKEN")]
     pub igdb_token: Option<String>,
+    /// Strategy for IGDB lookups (best-effort, always, or off)
+    #[arg(
+        long = "igdb-mode",
+        value_enum,
+        value_name = "MODE",
+        default_value_t = IgdbLookupMode::BestEffort
+    )]
+    pub igdb_mode: IgdbLookupMode,
+    /// Path to sqlite cache DB file. If omitted a default is used inside the output or next to the binary.
+    #[arg(long = "cache-db", value_name = "PATH")]
+    pub cache_db: Option<PathBuf>,
+    /// Number of threads to use for hashing (overrides default of logical CPU count)
+    #[arg(long = "hash-threads", value_name = "N")]
+    pub hash_threads: Option<usize>,
+    /// Number of threads to use for scanning (overrides default of logical CPU count)
+    #[arg(long = "scan-threads", value_name = "N")]
+    pub scan_threads: Option<usize>,
+    /// Show per-DAT match reasons in the IGIR summary output
+    #[arg(long = "show-match-reasons")]
+    pub show_match_reasons: bool,
+    /// Only use cached Hasheous/IGDB results; never perform network lookups
+    #[arg(long = "cache-only")]
+    pub cache_only: bool,
+    /// If set, save the provided or discovered IGDB client id/token to the persistent config file
+    #[arg(long = "save-igdb-creds")]
+    pub save_igdb_creds: bool,
 
     // Patch input options
     #[arg(short = 'p', long = "patch", value_name = "PATH", action = ArgAction::Append)]
@@ -225,4 +257,10 @@ pub struct Cli {
     pub verbose: u8,
     #[arg(short = 'q', long = "quiet", action = ArgAction::Count)]
     pub quiet: u8,
+    /// Print the execution plan JSON to stdout (opt-in)
+    #[arg(long = "print-plan")]
+    pub print_plan: bool,
+    /// Enable diagnostic progress logging on the DIAG bar
+    #[arg(long = "diag")]
+    pub diag: bool,
 }

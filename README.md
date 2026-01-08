@@ -302,7 +302,7 @@ Advanced usage:
     {type}            The type of the game (e.g. "Retail", "Demo", "Prototype")
     {category}        The DAT-defined category of the game (e.g. "Games", "Demos", "Multimedia
     ")
-    {genre}           The DAT-defined genre of the game
+    {genre}           The game's genre (IGDB/online metadata when available)
 
     {inputDirname}    The input file's dirname
     {outputBasename}  Equivalent to "{outputName}.{outputExt}"

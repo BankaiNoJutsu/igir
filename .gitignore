@@ -103,7 +103,6 @@ dist
 # TernJS port file
 .tern-port
 
-
 # Custom
 dist/
 /package
@@ -118,6 +117,8 @@ igir
 igir.exe
 !test/*.sh
 !packages/*
+rust/igir-rs/target/
+rust/igir-rs/metadata_map/
 
 # DATs
 *.dat

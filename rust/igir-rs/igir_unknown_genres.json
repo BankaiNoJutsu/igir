@@ -1,0 +1,910 @@
+[
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Donkey Kong Country 3 - Dixie Kong's Double Trouble! (Europe) (En,Fr,De).sfc",
+    "relative": "Donkey Kong Country 3 - Dixie Kong's Double Trouble! (Europe) (En,Fr,De).sfc",
+    "derived_platform": "snes",
+    "normalized_name": "Donkey Kong Country 3 Dixie Kong s Double Trouble",
+    "cache_key": "donkey kong country 3 dixie kong s double trouble",
+    "igdb_query": {
+      "body": "search \"Donkey Kong Country 3 Dixie Kong s Double Trouble\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Donkey",
+        "Kong",
+        "Country",
+        "3",
+        "Dixie",
+        "Kong",
+        "s",
+        "Double",
+        "Trouble"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "snes"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "donkey-kong-country-3-dixie-kong-s-double-trouble",
+      "name": "Donkey Kong Country 3: Dixie Kong's Double Trouble!",
+      "platforms": [
+        "Super Nintendo Entertainment System",
+        "snes",
+        "Wii",
+        "Wii U",
+        "wiiu",
+        "New Nintendo 3DS",
+        "new-3ds",
+        "New 3DS",
+        "Super Famicom",
+        "sfam"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Donkey Kong Country (Europe) (En,Fr,De) (Rev 1).sfc",
+    "relative": "Donkey Kong Country (Europe) (En,Fr,De) (Rev 1).sfc",
+    "derived_platform": "snes",
+    "normalized_name": "Donkey Kong Country",
+    "cache_key": "donkey kong country",
+    "igdb_query": {
+      "body": "search \"Donkey Kong Country\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Donkey",
+        "Kong",
+        "Country"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "snes"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "donkey-kong-country-4",
+      "name": "Donkey Kong Country 4",
+      "platforms": [
+        "Family Computer",
+        "famicom"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Digimon - Battle Spirit (Europe) (En,Fr,De,Es,It).gba",
+    "relative": "Digimon - Battle Spirit (Europe) (En,Fr,De,Es,It).gba",
+    "derived_platform": "gba",
+    "normalized_name": "Digimon Battle Spirit",
+    "cache_key": "digimon battle spirit",
+    "igdb_query": {
+      "body": "search \"Digimon Battle Spirit\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Digimon",
+        "Battle",
+        "Spirit"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "gba"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "digimon-battle-spirit",
+      "name": "Digimon: Battle Spirit",
+      "platforms": [
+        "Game Boy Advance",
+        "gba"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Super Mario World 2 - Yoshi's Island (Europe) (En,Fr,De) (Rev 1).sfc",
+    "relative": "Super Mario World 2 - Yoshi's Island (Europe) (En,Fr,De) (Rev 1).sfc",
+    "derived_platform": "snes",
+    "normalized_name": "Super Mario World 2 Yoshi s Island",
+    "cache_key": "super mario world 2 yoshi s island",
+    "igdb_query": {
+      "body": "search \"Super Mario World 2 Yoshi s Island\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Super",
+        "Mario",
+        "World",
+        "2",
+        "Yoshi",
+        "s",
+        "Island"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "snes"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "super-mario-world-2-yoshi-s-island",
+      "name": "Super Mario World 2: Yoshi's Island",
+      "platforms": [
+        "Satellaview",
+        "Super Nintendo Entertainment System",
+        "snes",
+        "Super Famicom",
+        "sfam"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Super Mario Kart (Europe).sfc",
+    "relative": "Super Mario Kart (Europe).sfc",
+    "derived_platform": "snes",
+    "normalized_name": "Super Mario Kart",
+    "cache_key": "super mario kart",
+    "igdb_query": {
+      "body": "search \"Super Mario Kart\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Super",
+        "Mario",
+        "Kart"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "snes"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "super-mario-kart-super-circuit-demake",
+      "name": "Super Mario Kart: Super Circuit Demake",
+      "platforms": [
+        "Super Nintendo Entertainment System",
+        "snes"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Super Mario World 2 - Yoshi's Island Rev 1 (1995)(Nintendo)(EU)(M3).bin",
+    "relative": "Super Mario World 2 - Yoshi's Island Rev 1 (1995)(Nintendo)(EU)(M3).bin",
+    "derived_platform": "snes",
+    "normalized_name": "Super Mario World 2 Yoshi s Island",
+    "cache_key": "super mario world 2 yoshi s island",
+    "igdb_query": {
+      "body": "search \"Super Mario World 2 Yoshi s Island\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Super",
+        "Mario",
+        "World",
+        "2",
+        "Yoshi",
+        "s",
+        "Island"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "snes"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "super-mario-world-2-yoshi-s-island",
+      "name": "Super Mario World 2: Yoshi's Island",
+      "platforms": [
+        "Satellaview",
+        "Super Nintendo Entertainment System",
+        "snes",
+        "Super Famicom",
+        "sfam"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Donkey Kong Country Rev 1 (1994)(Nintendo)(EU)(M3).bin",
+    "relative": "Donkey Kong Country Rev 1 (1994)(Nintendo)(EU)(M3).bin",
+    "derived_platform": "snes",
+    "normalized_name": "Donkey Kong Country",
+    "cache_key": "donkey kong country",
+    "igdb_query": {
+      "body": "search \"Donkey Kong Country\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Donkey",
+        "Kong",
+        "Country"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "snes"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "donkey-kong-country-4",
+      "name": "Donkey Kong Country 4",
+      "platforms": [
+        "Family Computer",
+        "famicom"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Donkey Kong Country 3 - Dixie Kong's Double Trouble (1996)(Nintendo)(EU)(M3).bin",
+    "relative": "Donkey Kong Country 3 - Dixie Kong's Double Trouble (1996)(Nintendo)(EU)(M3).bin",
+    "derived_platform": "snes",
+    "normalized_name": "Donkey Kong Country 3 Dixie Kong s Double Trouble",
+    "cache_key": "donkey kong country 3 dixie kong s double trouble",
+    "igdb_query": {
+      "body": "search \"Donkey Kong Country 3 Dixie Kong s Double Trouble\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Donkey",
+        "Kong",
+        "Country",
+        "3",
+        "Dixie",
+        "Kong",
+        "s",
+        "Double",
+        "Trouble"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "snes"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "donkey-kong-country-3-dixie-kong-s-double-trouble",
+      "name": "Donkey Kong Country 3: Dixie Kong's Double Trouble!",
+      "platforms": [
+        "Super Nintendo Entertainment System",
+        "snes",
+        "Wii",
+        "Wii U",
+        "wiiu",
+        "New Nintendo 3DS",
+        "new-3ds",
+        "New 3DS",
+        "Super Famicom",
+        "sfam"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Super Mario RPG - Legend of the Seven Stars (1996)(Nintendo - Square)(US).bin",
+    "relative": "Super Mario RPG - Legend of the Seven Stars (1996)(Nintendo - Square)(US).bin",
+    "derived_platform": "snes",
+    "normalized_name": "Super Mario RPG Legend of the Seven Stars",
+    "cache_key": "super mario rpg legend of the seven stars",
+    "igdb_query": {
+      "body": "search \"Super Mario RPG Legend of the Seven Stars\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Super",
+        "Mario",
+        "RPG",
+        "Legend",
+        "of",
+        "the",
+        "Seven",
+        "Stars"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "snes"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "super-mario-rpg-legend-of-the-seven-stars",
+      "name": "Super Mario RPG: Legend of the Seven Stars",
+      "platforms": [
+        "Super Nintendo Entertainment System",
+        "snes",
+        "Wii",
+        "Wii U",
+        "wiiu",
+        "Super Famicom",
+        "sfam"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Donkey Kong Country - Competition Cartridge (1994)(Nintendo)(US).bin",
+    "relative": "Donkey Kong Country - Competition Cartridge (1994)(Nintendo)(US).bin",
+    "derived_platform": "snes",
+    "normalized_name": "Donkey Kong Country Competition Cartridge",
+    "cache_key": "donkey kong country competition cartridge",
+    "igdb_query": {
+      "body": "search \"Donkey Kong Country Competition Cartridge\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Donkey",
+        "Kong",
+        "Country",
+        "Competition",
+        "Cartridge"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "snes"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "donkey-kong-country-competition-cartridge",
+      "name": "Donkey Kong Country: Competition Cartridge",
+      "platforms": [
+        "Super Nintendo Entertainment System",
+        "snes"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Digimon Racing (Europe) (En,Fr,De,Es,It).gba",
+    "relative": "Digimon Racing (Europe) (En,Fr,De,Es,It).gba",
+    "derived_platform": "gba",
+    "normalized_name": "Digimon Racing",
+    "cache_key": "digimon racing",
+    "igdb_query": {
+      "body": "search \"Digimon Racing\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Digimon",
+        "Racing"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "gba"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "digimon-racing",
+      "name": "Digimon Racing",
+      "platforms": [
+        "Game Boy Advance",
+        "gba"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Batman Returns (World).gg",
+    "relative": "Batman Returns (World).gg",
+    "derived_platform": "gamegear",
+    "normalized_name": "Batman Returns",
+    "cache_key": "batman returns",
+    "igdb_query": {
+      "body": "search \"Batman Returns\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Batman",
+        "Returns"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "gamegear"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "batman-returns--6",
+      "name": "Batman Returns",
+      "platforms": [
+        "Sega Game Gear",
+        "gamegear",
+        "Game Gear"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Asterix and the Great Rescue (Europe) (En,Fr,De,Es,It).gg",
+    "relative": "Asterix and the Great Rescue (Europe) (En,Fr,De,Es,It).gg",
+    "derived_platform": "gamegear",
+    "normalized_name": "Asterix and the Great Rescue",
+    "cache_key": "asterix and the great rescue",
+    "igdb_query": {
+      "body": "search \"Asterix and the Great Rescue\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Asterix",
+        "and",
+        "the",
+        "Great",
+        "Rescue"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "gamegear"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "asterix-and-the-great-rescue",
+      "name": "Astérix and the Great Rescue",
+      "platforms": [
+        "Sega Mega Drive/Genesis",
+        "genesis-slash-megadrive",
+        "Genesis/MegaDrive",
+        "Sega Game Gear",
+        "gamegear",
+        "Game Gear",
+        "Sega Master System/Mark III",
+        "sms"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Asterix and the Secret Mission (Europe) (En,Fr,De).gg",
+    "relative": "Asterix and the Secret Mission (Europe) (En,Fr,De).gg",
+    "derived_platform": "gamegear",
+    "normalized_name": "Asterix and the Secret Mission",
+    "cache_key": "asterix and the secret mission",
+    "igdb_query": {
+      "body": "search \"Asterix and the Secret Mission\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Asterix",
+        "and",
+        "the",
+        "Secret",
+        "Mission"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "gamegear"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "asterix-and-the-great-rescue",
+      "name": "Astérix and the Great Rescue",
+      "platforms": [
+        "Sega Mega Drive/Genesis",
+        "genesis-slash-megadrive",
+        "Genesis/MegaDrive",
+        "Sega Game Gear",
+        "gamegear",
+        "Game Gear",
+        "Sega Master System/Mark III",
+        "sms"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\007 - The World Is Not Enough (USA, Europe).gbc",
+    "relative": "007 - The World Is Not Enough (USA, Europe).gbc",
+    "derived_platform": "gbc",
+    "normalized_name": "007 The World Is Not Enough",
+    "cache_key": "007 the world is not enough",
+    "igdb_query": {
+      "body": "search \"007 The World Is Not Enough\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "007",
+        "The",
+        "World",
+        "Is",
+        "Not",
+        "Enough"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "gbc"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "james-bond-007-the-world-is-not-enough",
+      "name": "James Bond 007: The World Is Not Enough",
+      "platforms": [
+        "Game Boy Color",
+        "gbc"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Addams Family, The (World).zip",
+    "relative": "Addams Family, The (World).gg",
+    "derived_platform": "gamegear",
+    "normalized_name": "Addams Family The",
+    "cache_key": "addams family the",
+    "igdb_query": {
+      "body": "search \"Addams Family The\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Addams",
+        "Family",
+        "The"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "gamegear"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-cache-miss",
+    "cache": null
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Super Mario All-Stars and Super Mario World (Europe).sfc",
+    "relative": "Super Mario All-Stars and Super Mario World (Europe).sfc",
+    "derived_platform": "snes",
+    "normalized_name": "Super Mario All Stars and Super Mario World",
+    "cache_key": "super mario all stars and super mario world",
+    "igdb_query": {
+      "body": "search \"Super Mario All Stars and Super Mario World\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Super",
+        "Mario",
+        "All",
+        "Stars",
+        "and",
+        "Super",
+        "Mario",
+        "World"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "snes"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "super-mario-all-stars-plus-super-mario-world",
+      "name": "Super Mario All-Stars + Super Mario World",
+      "platforms": [
+        "Super Nintendo Entertainment System",
+        "snes"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Denki Blocks! (Europe) (En,Fr,De,Es,It).gba",
+    "relative": "Denki Blocks! (Europe) (En,Fr,De,Es,It).gba",
+    "derived_platform": "gba",
+    "normalized_name": "Denki Blocks",
+    "cache_key": "denki blocks",
+    "igdb_query": {
+      "body": "search \"Denki Blocks\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Denki",
+        "Blocks"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "gba"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "denki-blocks",
+      "name": "Denki Blocks!",
+      "platforms": [
+        "Game Boy Color",
+        "gbc",
+        "Android",
+        "iOS",
+        "PlayStation Portable",
+        "psp",
+        "Game Boy Advance",
+        "gba"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Digimon - Battle Spirit 2 (Europe) (En,Fr,De,Es,It).gba",
+    "relative": "Digimon - Battle Spirit 2 (Europe) (En,Fr,De,Es,It).gba",
+    "derived_platform": "gba",
+    "normalized_name": "Digimon Battle Spirit 2",
+    "cache_key": "digimon battle spirit 2",
+    "igdb_query": {
+      "body": "search \"Digimon Battle Spirit 2\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Digimon",
+        "Battle",
+        "Spirit",
+        "2"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "gba"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "digimon-battle-spirit-2",
+      "name": "Digimon: Battle Spirit 2",
+      "platforms": [
+        "WonderSwan Color",
+        "wonderswan-color",
+        "Game Boy Advance",
+        "gba"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Batman Forever (World).gg",
+    "relative": "Batman Forever (World).gg",
+    "derived_platform": "gamegear",
+    "normalized_name": "Batman Forever",
+    "cache_key": "batman forever",
+    "igdb_query": {
+      "body": "search \"Batman Forever\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Batman",
+        "Forever"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "gamegear"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "batman-forever--4",
+      "name": "Batman Forever",
+      "platforms": [
+        "Sega Game Gear",
+        "gamegear",
+        "Game Gear"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Donkey Kong Country 2 - Diddy's Kong Quest (Europe) (En,Fr) (Rev 1).sfc",
+    "relative": "Donkey Kong Country 2 - Diddy's Kong Quest (Europe) (En,Fr) (Rev 1).sfc",
+    "derived_platform": "snes",
+    "normalized_name": "Donkey Kong Country 2 Diddy s Kong Quest",
+    "cache_key": "donkey kong country 2 diddy s kong quest",
+    "igdb_query": {
+      "body": "search \"Donkey Kong Country 2 Diddy s Kong Quest\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Donkey",
+        "Kong",
+        "Country",
+        "2",
+        "Diddy",
+        "s",
+        "Kong",
+        "Quest"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "snes"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "donkey-kong-country-2-diddy-s-kong-quest",
+      "name": "Donkey Kong Country 2: Diddy's Kong Quest",
+      "platforms": [
+        "Super Nintendo Entertainment System",
+        "snes",
+        "Wii",
+        "Wii U",
+        "wiiu",
+        "New Nintendo 3DS",
+        "new-3ds",
+        "New 3DS",
+        "Super Famicom",
+        "sfam"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Donkey Kong Country 2 - Diddy's Kong Quest Rev 1 (1995)(Nintendo)(EU)(en-fr).bin",
+    "relative": "Donkey Kong Country 2 - Diddy's Kong Quest Rev 1 (1995)(Nintendo)(EU)(en-fr).bin",
+    "derived_platform": "snes",
+    "normalized_name": "Donkey Kong Country 2 Diddy s Kong Quest",
+    "cache_key": "donkey kong country 2 diddy s kong quest",
+    "igdb_query": {
+      "body": "search \"Donkey Kong Country 2 Diddy s Kong Quest\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Donkey",
+        "Kong",
+        "Country",
+        "2",
+        "Diddy",
+        "s",
+        "Kong",
+        "Quest"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "snes"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "donkey-kong-country-2-diddy-s-kong-quest",
+      "name": "Donkey Kong Country 2: Diddy's Kong Quest",
+      "platforms": [
+        "Super Nintendo Entertainment System",
+        "snes",
+        "Wii",
+        "Wii U",
+        "wiiu",
+        "New Nintendo 3DS",
+        "new-3ds",
+        "New 3DS",
+        "Super Famicom",
+        "sfam"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Super Mario World (Europe) (Rev 1).sfc",
+    "relative": "Super Mario World (Europe) (Rev 1).sfc",
+    "derived_platform": "snes",
+    "normalized_name": "Super Mario World",
+    "cache_key": "super mario world",
+    "igdb_query": {
+      "body": "search \"Super Mario World\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Super",
+        "Mario",
+        "World"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "snes"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "super-mario-world--1",
+      "name": "Super Mario World",
+      "platforms": [
+        "Family Computer",
+        "famicom"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Super Mario All-Stars (Europe).sfc",
+    "relative": "Super Mario All-Stars (Europe).sfc",
+    "derived_platform": "snes",
+    "normalized_name": "Super Mario All Stars",
+    "cache_key": "super mario all stars",
+    "igdb_query": {
+      "body": "search \"Super Mario All Stars\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Super",
+        "Mario",
+        "All",
+        "Stars"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "snes"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "super-mario-all-stars-plus-super-mario-world",
+      "name": "Super Mario All-Stars + Super Mario World",
+      "platforms": [
+        "Super Nintendo Entertainment System",
+        "snes"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Super Mario All-Stars + Super Mario World (1993)(Nintendo)(EU).bin",
+    "relative": "Super Mario All-Stars + Super Mario World (1993)(Nintendo)(EU).bin",
+    "derived_platform": "snes",
+    "normalized_name": "Super Mario All Stars Super Mario World",
+    "cache_key": "super mario all stars super mario world",
+    "igdb_query": {
+      "body": "search \"Super Mario All Stars Super Mario World\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Super",
+        "Mario",
+        "All",
+        "Stars",
+        "Super",
+        "Mario",
+        "World"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "snes"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "super-mario-all-stars-plus-super-mario-world",
+      "name": "Super Mario All-Stars + Super Mario World",
+      "platforms": [
+        "Super Nintendo Entertainment System",
+        "snes"
+      ],
+      "has_genres": true
+    }
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Aladdin (USA, Europe, Brazil).zip",
+    "relative": "Aladdin (USA, Europe, Brazil).gg",
+    "derived_platform": "gamegear",
+    "normalized_name": "Aladdin",
+    "cache_key": "aladdin",
+    "igdb_query": {
+      "body": "search \"Aladdin\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Aladdin"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "gamegear"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-cache-miss",
+    "cache": null
+  },
+  {
+    "source": "\\\\192.168.1.66\\games\\TEST\\SRC_MINI\\Donkey Kong Country Rev 0 (1994)(Nintendo)(EU)(M3).bin",
+    "relative": "Donkey Kong Country Rev 0 (1994)(Nintendo)(EU)(M3).bin",
+    "derived_platform": "snes",
+    "normalized_name": "Donkey Kong Country",
+    "cache_key": "donkey kong country",
+    "igdb_query": {
+      "body": "search \"Donkey Kong Country\"; fields name,slug,summary,first_release_date,platforms.name,platforms.slug,platforms.abbreviation,genres.name,version_parent,parent_game; limit 5;",
+      "keywords": [
+        "Donkey",
+        "Kong",
+        "Country"
+      ],
+      "keyword_strategy": "strip extensions, drop bracketed tokens, replace punctuation with spaces, remove standalone years and common region/platform noise, then build multi-tier keyword searches (full phrase, truncated phrases, single tokens when short) and augment each with platform hints plus optional platform filters",
+      "platform_hint": "snes"
+    },
+    "igdb_mode": "BestEffort",
+    "igdb_client_configured": true,
+    "igdb_network_enabled": true,
+    "reason": "igdb-entry-has-genres",
+    "cache": {
+      "slug": "donkey-kong-country-4",
+      "name": "Donkey Kong Country 4",
+      "platforms": [
+        "Family Computer",
+        "famicom"
+      ],
+      "has_genres": true
+    }
+  }
+]

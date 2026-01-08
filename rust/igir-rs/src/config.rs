@@ -1,10 +1,17 @@
+use std::env;
+use std::fs;
 use std::path::PathBuf;
+use std::time::Duration;
+
+use anyhow::anyhow;
+use reqwest::blocking::Client;
+use serde::Deserialize;
 
 use crate::{
     cli::Cli,
     types::{
-        Action, ArchiveChecksumMode, Checksum, DirGameSubdirMode, FixExtensionMode, LinkMode,
-        MergeMode, MoveDeleteDirsMode, ZipFormat,
+        Action, ArchiveChecksumMode, Checksum, DirGameSubdirMode, FileRecord, FixExtensionMode,
+        IgdbLookupMode, LinkMode, MergeMode, MoveDeleteDirsMode, ZipFormat,
     },
 };
 
@@ -25,9 +32,15 @@ pub struct Config {
     pub dat_description_regex_exclude: Option<String>,
     pub dat_combine: bool,
     pub dat_ignore_parent_clone: bool,
+    pub list_unmatched_dats: bool,
+    pub print_plan: bool,
     pub enable_hasheous: bool,
     pub igdb_client_id: Option<String>,
+    #[serde(skip_serializing)]
+    pub igdb_client_secret: Option<String>,
     pub igdb_token: Option<String>,
+    pub igdb_token_expires_at: Option<i64>,
+    pub igdb_mode: IgdbLookupMode,
     pub patch: Vec<PathBuf>,
     pub patch_exclude: Vec<PathBuf>,
     pub output: Option<PathBuf>,
@@ -78,6 +91,18 @@ pub struct Config {
     pub no_program: bool,
     pub verbose: u8,
     pub quiet: u8,
+    pub diag: bool,
+    pub show_match_reasons: bool,
+    pub scan_threads: Option<usize>,
+    // Online lookup tuning
+    pub online_timeout_secs: Option<u64>,
+    pub online_max_retries: Option<usize>,
+    pub online_throttle_ms: Option<u64>,
+    // Cache options
+    pub cache_only: bool,
+    // Optional explicit cache DB path
+    pub cache_db: Option<PathBuf>,
+    pub hash_threads: Option<usize>,
 }
 
 impl Config {
@@ -157,6 +182,102 @@ impl Config {
         self.validate_checksum_range()?;
         self.validate_letter_strategy()?;
         self.validate_output_requirements()?;
+        // Validate CLI-provided hash thread count (if any)
+        if let Some(n) = self.hash_threads {
+            if n == 0 {
+                anyhow::bail!("--hash-threads must be >= 1");
+            }
+        }
+        if let Some(n) = self.scan_threads {
+            if n == 0 {
+                anyhow::bail!("--scan-threads must be >= 1");
+            }
+        }
+        Ok(())
+    }
+
+    pub fn igdb_lookup_enabled(&self) -> bool {
+        !matches!(self.igdb_mode, IgdbLookupMode::Off)
+    }
+
+    pub fn igdb_client_configured(&self) -> bool {
+        self.igdb_lookup_enabled() && self.igdb_client_id.is_some()
+    }
+
+    pub fn igdb_network_enabled(&self) -> bool {
+        self.igdb_lookup_enabled() && self.igdb_client_id.is_some() && self.igdb_token.is_some()
+    }
+
+    pub fn should_attempt_igdb_lookup(&self, record: &FileRecord) -> bool {
+        match self.igdb_mode {
+            IgdbLookupMode::Off => false,
+            IgdbLookupMode::BestEffort => record.derived_platform.is_none(),
+            IgdbLookupMode::Always => record.derived_genres.is_empty(),
+        }
+    }
+
+    fn igdb_token_is_valid(&self, token_from_cli: bool) -> bool {
+        if self.igdb_client_id.is_none() {
+            return true;
+        }
+        let Some(token) = self.igdb_token.as_ref() else {
+            return false;
+        };
+        let _ = token; // suppress unused warning when no expiry metadata
+        match self.igdb_token_expires_at {
+            Some(expires_at) => {
+                let now = chrono::Utc::now().timestamp();
+                expires_at.saturating_sub(now) > 60
+            }
+            None => self.igdb_client_secret.is_none() || token_from_cli,
+        }
+    }
+
+    fn refresh_igdb_token_if_needed(&mut self, token_from_cli: bool) -> anyhow::Result<()> {
+        if self.cache_only || !self.igdb_lookup_enabled() {
+            return Ok(());
+        }
+        if self.igdb_client_id.is_none() {
+            return Ok(());
+        }
+        if self.igdb_token_is_valid(token_from_cli) {
+            return Ok(());
+        }
+        let client_id = self
+            .igdb_client_id
+            .as_ref()
+            .expect("client_id checked above");
+        let client_secret = self
+            .igdb_client_secret
+            .as_ref()
+            .ok_or_else(|| anyhow!(
+                "IGDB token is missing or expired. Provide --igdb-client-secret or refresh the token manually with --igdb-token."
+            ))?;
+
+        let (token, expires_at) = request_new_igdb_token(client_id, client_secret)?;
+        self.igdb_token = Some(token);
+        self.igdb_token_expires_at = Some(expires_at);
+        Ok(())
+    }
+
+    fn persist_igdb_creds(&self) -> anyhow::Result<()> {
+        if self.igdb_client_id.is_none()
+            && self.igdb_client_secret.is_none()
+            && self.igdb_token.is_none()
+        {
+            return Ok(());
+        }
+        let path = persisted_config_path()?;
+        if let Some(parent) = path.parent() {
+            fs::create_dir_all(parent)?;
+        }
+        let obj = serde_json::json!({
+            "igdb_client_id": self.igdb_client_id.clone(),
+            "igdb_client_secret": self.igdb_client_secret.clone(),
+            "igdb_token": self.igdb_token.clone(),
+            "igdb_token_expires_at": self.igdb_token_expires_at,
+        });
+        fs::write(path, serde_json::to_string_pretty(&obj)?)?;
         Ok(())
     }
 }
@@ -165,7 +286,45 @@ impl TryFrom<Cli> for Config {
     type Error = anyhow::Error;
 
     fn try_from(cli: Cli) -> Result<Self, Self::Error> {
-        let config = Self {
+        // Attempt to load persisted credentials from disk. CLI flags override persisted values.
+        let mut persisted_client_id: Option<String> = None;
+        let mut persisted_client_secret: Option<String> = None;
+        let mut persisted_token: Option<String> = None;
+        let mut persisted_token_expires_at: Option<i64> = None;
+        let mut loaded_persisted = false;
+        if let Ok(cfg_path) = persisted_config_path() {
+            if cfg_path.exists() {
+                if let Ok(s) = fs::read_to_string(&cfg_path) {
+                    if let Ok(j) = serde_json::from_str::<serde_json::Value>(&s) {
+                        loaded_persisted = true;
+                        persisted_client_id = j
+                            .get("igdb_client_id")
+                            .and_then(|v| v.as_str().map(|s| s.to_string()));
+                        persisted_client_secret = j
+                            .get("igdb_client_secret")
+                            .and_then(|v| v.as_str().map(|s| s.to_string()));
+                        persisted_token = j
+                            .get("igdb_token")
+                            .and_then(|v| v.as_str().map(|s| s.to_string()));
+                        persisted_token_expires_at =
+                            j.get("igdb_token_expires_at").and_then(|v| v.as_i64());
+                    }
+                }
+            }
+        }
+
+        // Effective credentials: CLI flags take precedence over persisted values
+        let effective_client_id = cli.igdb_client_id.clone().or(persisted_client_id);
+        let effective_client_secret = cli.igdb_client_secret.clone().or(persisted_client_secret);
+        let token_from_cli = cli.igdb_token.is_some();
+        let effective_token = cli.igdb_token.clone().or(persisted_token);
+        let effective_token_expires_at = if token_from_cli {
+            None
+        } else {
+            persisted_token_expires_at
+        };
+
+        let mut config = Self {
             commands: cli.commands,
             input: cli.input,
             input_exclude: cli.input_exclude,
@@ -181,9 +340,14 @@ impl TryFrom<Cli> for Config {
             dat_description_regex_exclude: cli.dat_description_regex_exclude,
             dat_combine: cli.dat_combine,
             dat_ignore_parent_clone: cli.dat_ignore_parent_clone,
+            list_unmatched_dats: cli.list_unmatched_dats,
+            print_plan: cli.print_plan,
             enable_hasheous: cli.enable_hasheous,
-            igdb_client_id: cli.igdb_client_id,
-            igdb_token: cli.igdb_token,
+            igdb_client_id: effective_client_id.clone(),
+            igdb_client_secret: effective_client_secret.clone(),
+            igdb_token: effective_token.clone(),
+            igdb_token_expires_at: effective_token_expires_at,
+            igdb_mode: cli.igdb_mode,
             patch: cli.patch,
             patch_exclude: cli.patch_exclude,
             output: cli.output,
@@ -234,7 +398,26 @@ impl TryFrom<Cli> for Config {
             no_program: cli.no_program,
             verbose: cli.verbose,
             quiet: cli.quiet,
+            diag: cli.diag,
+            online_timeout_secs: Some(5),
+            online_max_retries: Some(3),
+            online_throttle_ms: None,
+            cache_only: cli.cache_only,
+            cache_db: cli.cache_db,
+            hash_threads: cli.hash_threads,
+            scan_threads: cli.scan_threads,
+            show_match_reasons: cli.show_match_reasons,
         };
+
+        config.refresh_igdb_token_if_needed(token_from_cli)?;
+
+        if cli.save_igdb_creds || loaded_persisted {
+            if let Err(err) = config.persist_igdb_creds() {
+                if config.verbose > 0 {
+                    eprintln!("warning: unable to persist IGDB credentials: {}", err);
+                }
+            }
+        }
 
         config.validate()?;
 
@@ -242,16 +425,155 @@ impl TryFrom<Cli> for Config {
     }
 }
 
+impl Default for Config {
+    fn default() -> Self {
+        Self {
+            commands: vec![],
+            input: vec![],
+            input_exclude: vec![],
+            input_checksum_quick: false,
+            input_checksum_min: crate::types::Checksum::Crc32,
+            input_checksum_max: None,
+            input_checksum_archives: crate::types::ArchiveChecksumMode::Auto,
+            dat: vec![],
+            dat_exclude: vec![],
+            dat_name_regex: None,
+            dat_name_regex_exclude: None,
+            dat_description_regex: None,
+            dat_description_regex_exclude: None,
+            dat_combine: false,
+            dat_ignore_parent_clone: false,
+            list_unmatched_dats: false,
+            print_plan: true,
+            enable_hasheous: false,
+            igdb_client_id: None,
+            igdb_client_secret: None,
+            igdb_token: None,
+            igdb_token_expires_at: None,
+            igdb_mode: crate::types::IgdbLookupMode::BestEffort,
+            patch: vec![],
+            patch_exclude: vec![],
+            output: None,
+            dir_mirror: false,
+            dir_dat_mirror: false,
+            dir_dat_name: false,
+            dir_dat_description: false,
+            dir_letter: false,
+            dir_letter_count: None,
+            dir_letter_limit: None,
+            dir_letter_group: false,
+            dir_game_subdir: crate::types::DirGameSubdirMode::Multiple,
+            fix_extension: crate::types::FixExtensionMode::Auto,
+            overwrite: false,
+            overwrite_invalid: false,
+            move_delete_dirs: crate::types::MoveDeleteDirsMode::Auto,
+            clean_exclude: vec![],
+            clean_backup: None,
+            clean_dry_run: false,
+            zip_format: crate::types::ZipFormat::Torrentzip,
+            zip_exclude: None,
+            zip_dat_name: false,
+            link_mode: crate::types::LinkMode::Hardlink,
+            symlink_relative: false,
+            header: None,
+            remove_headers: None,
+            trimmed_glob: None,
+            trim_scan_archives: false,
+            merge_roms: crate::types::MergeMode::Fullnonmerged,
+            merge_discs: false,
+            exclude_disks: false,
+            allow_excess_sets: false,
+            allow_incomplete_sets: false,
+            filter_regex: None,
+            filter_regex_exclude: None,
+            filter_language: None,
+            filter_region: None,
+            filter_category_regex: None,
+            no_bios: false,
+            no_device: false,
+            no_unlicensed: false,
+            only_retail: false,
+            no_debug: false,
+            no_demo: false,
+            no_beta: false,
+            no_sample: false,
+            no_prototype: false,
+            no_program: false,
+            verbose: 0,
+            quiet: 0,
+            diag: false,
+            show_match_reasons: false,
+            online_timeout_secs: Some(5),
+            online_max_retries: Some(3),
+            online_throttle_ms: None,
+            cache_only: false,
+            cache_db: None,
+            hash_threads: None,
+            scan_threads: None,
+        }
+    }
+}
+
+// Determine a platform-appropriate path to store persistent config (e.g., IGDB creds)
+fn persisted_config_path() -> anyhow::Result<PathBuf> {
+    // Allow an explicit override for tests or user preference
+    if let Ok(dir) = env::var("IGIR_CONFIG_DIR") {
+        let mut p = PathBuf::from(dir);
+        p.push("config.json");
+        return Ok(p);
+    }
+
+    if let Ok(path) = env::var("IGIR_CONFIG_PATH") {
+        return Ok(PathBuf::from(path));
+    }
+
+    // Default: save next to the running binary (in the binary's folder)
+    let exe = env::current_exe()?;
+    if let Some(parent) = exe.parent() {
+        let mut p = PathBuf::from(parent);
+        p.push("config.json");
+        return Ok(p);
+    }
+
+    anyhow::bail!("unable to determine a config path for persisted credentials")
+}
+
+#[derive(Deserialize)]
+struct IgdbTokenResponse {
+    access_token: String,
+    expires_in: i64,
+}
+
+fn request_new_igdb_token(client_id: &str, client_secret: &str) -> anyhow::Result<(String, i64)> {
+    let base =
+        env::var("IGDB_TOKEN_BASE").unwrap_or_else(|_| "https://id.twitch.tv/oauth2".to_string());
+    let url = format!("{}/token", base.trim_end_matches('/'));
+    let client = Client::builder().timeout(Duration::from_secs(10)).build()?;
+    let resp = client
+        .post(url)
+        .form(&[
+            ("client_id", client_id),
+            ("client_secret", client_secret),
+            ("grant_type", "client_credentials"),
+        ])
+        .send()?;
+    let resp = resp.error_for_status()?;
+    let parsed: IgdbTokenResponse = resp.json()?;
+    let now = chrono::Utc::now().timestamp();
+    let expires_at = now + parsed.expires_in.saturating_sub(60).max(0);
+    Ok((parsed.access_token, expires_at))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::cli::Cli;
+    use crate::types::{ChecksumSet, FileRecord};
 
-    #[test]
-    fn errors_when_no_commands_provided() {
-        let cli = Cli {
-            commands: vec![],
-            input: vec![],
+    fn make_cli(print_plan: bool) -> Cli {
+        Cli {
+            commands: vec![Action::Test],
+            input: vec![PathBuf::from("/tmp/file.bin")],
             input_exclude: vec![],
             input_checksum_quick: false,
             input_checksum_min: Checksum::Crc32,
@@ -265,9 +587,12 @@ mod tests {
             dat_description_regex_exclude: None,
             dat_combine: false,
             dat_ignore_parent_clone: false,
+            list_unmatched_dats: false,
             enable_hasheous: false,
             igdb_client_id: None,
+            igdb_client_secret: None,
             igdb_token: None,
+            igdb_mode: IgdbLookupMode::BestEffort,
             patch: vec![],
             patch_exclude: vec![],
             output: None,
@@ -318,6 +643,141 @@ mod tests {
             no_program: false,
             verbose: 0,
             quiet: 0,
+            diag: false,
+            cache_only: false,
+            cache_db: None,
+            hash_threads: None,
+            scan_threads: None,
+            show_match_reasons: false,
+            save_igdb_creds: false,
+            print_plan,
+        }
+    }
+
+    fn sample_record() -> FileRecord {
+        FileRecord {
+            source: PathBuf::from("test.bin"),
+            relative: PathBuf::from("test.bin"),
+            size: 0,
+            checksums: ChecksumSet {
+                crc32: None,
+                md5: None,
+                sha1: None,
+                sha256: None,
+            },
+            letter_dir: None,
+            derived_platform: None,
+            derived_genres: Vec::new(),
+            derived_region: None,
+            derived_languages: Vec::new(),
+            scan_info: None,
+        }
+    }
+
+    #[test]
+    fn igdb_lookup_mode_controls_behavior() {
+        let cli = make_cli(false);
+        let mut config = Config::try_from(cli).expect("valid config");
+        let mut record = sample_record();
+
+        config.igdb_mode = IgdbLookupMode::Off;
+        assert!(!config.should_attempt_igdb_lookup(&record));
+
+        config.igdb_mode = IgdbLookupMode::BestEffort;
+        assert!(config.should_attempt_igdb_lookup(&record));
+        record.derived_platform = Some("snes".to_string());
+        assert!(!config.should_attempt_igdb_lookup(&record));
+
+        config.igdb_mode = IgdbLookupMode::Always;
+        record.derived_genres.clear();
+        record.derived_platform = Some("gba".to_string());
+        assert!(config.should_attempt_igdb_lookup(&record));
+        record.derived_genres.push("RPG".to_string());
+        assert!(!config.should_attempt_igdb_lookup(&record));
+    }
+
+    #[test]
+    fn errors_when_no_commands_provided() {
+        let cli = Cli {
+            commands: vec![],
+            input: vec![],
+            input_exclude: vec![],
+            input_checksum_quick: false,
+            input_checksum_min: Checksum::Crc32,
+            input_checksum_max: None,
+            input_checksum_archives: ArchiveChecksumMode::Auto,
+            dat: vec![],
+            dat_exclude: vec![],
+            dat_name_regex: None,
+            dat_name_regex_exclude: None,
+            dat_description_regex: None,
+            dat_description_regex_exclude: None,
+            dat_combine: false,
+            dat_ignore_parent_clone: false,
+            list_unmatched_dats: false,
+            enable_hasheous: false,
+            igdb_client_id: None,
+            igdb_client_secret: None,
+            igdb_token: None,
+            igdb_mode: IgdbLookupMode::BestEffort,
+            patch: vec![],
+            patch_exclude: vec![],
+            output: None,
+            dir_mirror: false,
+            dir_dat_mirror: false,
+            dir_dat_name: false,
+            dir_dat_description: false,
+            dir_letter: false,
+            dir_letter_count: None,
+            dir_letter_limit: None,
+            dir_letter_group: false,
+            dir_game_subdir: DirGameSubdirMode::Multiple,
+            fix_extension: FixExtensionMode::Auto,
+            overwrite: false,
+            overwrite_invalid: false,
+            move_delete_dirs: MoveDeleteDirsMode::Auto,
+            clean_exclude: vec![],
+            clean_backup: None,
+            clean_dry_run: false,
+            zip_format: ZipFormat::Torrentzip,
+            zip_exclude: None,
+            zip_dat_name: false,
+            link_mode: LinkMode::Hardlink,
+            symlink_relative: false,
+            header: None,
+            remove_headers: None,
+            trimmed_glob: None,
+            trim_scan_archives: false,
+            merge_roms: MergeMode::Fullnonmerged,
+            merge_discs: false,
+            exclude_disks: false,
+            allow_excess_sets: false,
+            allow_incomplete_sets: false,
+            filter_regex: None,
+            filter_regex_exclude: None,
+            filter_language: None,
+            filter_region: None,
+            filter_category_regex: None,
+            no_bios: false,
+            no_device: false,
+            no_unlicensed: false,
+            only_retail: false,
+            no_debug: false,
+            no_demo: false,
+            no_beta: false,
+            no_sample: false,
+            no_prototype: false,
+            no_program: false,
+            verbose: 0,
+            quiet: 0,
+            diag: false,
+            print_plan: false,
+            cache_only: false,
+            cache_db: None,
+            hash_threads: None,
+            scan_threads: None,
+            show_match_reasons: false,
+            save_igdb_creds: false,
         };
 
         let result = Config::try_from(cli);
@@ -342,9 +802,12 @@ mod tests {
             dat_description_regex_exclude: None,
             dat_combine: false,
             dat_ignore_parent_clone: false,
+            list_unmatched_dats: false,
             enable_hasheous: false,
             igdb_client_id: None,
+            igdb_client_secret: None,
             igdb_token: None,
+            igdb_mode: IgdbLookupMode::BestEffort,
             patch: vec![],
             patch_exclude: vec![],
             output: Some(PathBuf::from("out")),
@@ -395,6 +858,14 @@ mod tests {
             no_program: false,
             verbose: 0,
             quiet: 0,
+            diag: false,
+            print_plan: false,
+            cache_only: false,
+            cache_db: None,
+            hash_threads: None,
+            scan_threads: None,
+            show_match_reasons: false,
+            save_igdb_creds: false,
         };
 
         let result = Config::try_from(cli);
@@ -419,9 +890,12 @@ mod tests {
             dat_description_regex_exclude: None,
             dat_combine: false,
             dat_ignore_parent_clone: false,
+            list_unmatched_dats: false,
             enable_hasheous: false,
             igdb_client_id: None,
+            igdb_client_secret: None,
             igdb_token: None,
+            igdb_mode: IgdbLookupMode::BestEffort,
             patch: vec![],
             patch_exclude: vec![],
             output: Some(PathBuf::from("out")),
@@ -472,6 +946,14 @@ mod tests {
             no_program: false,
             verbose: 0,
             quiet: 0,
+            diag: false,
+            print_plan: false,
+            cache_only: false,
+            cache_db: None,
+            hash_threads: None,
+            scan_threads: None,
+            show_match_reasons: false,
+            save_igdb_creds: false,
         };
 
         let result = Config::try_from(cli);
@@ -496,9 +978,12 @@ mod tests {
             dat_description_regex_exclude: None,
             dat_combine: false,
             dat_ignore_parent_clone: false,
+            list_unmatched_dats: false,
             enable_hasheous: false,
             igdb_client_id: None,
+            igdb_client_secret: None,
             igdb_token: None,
+            igdb_mode: IgdbLookupMode::BestEffort,
             patch: vec![],
             patch_exclude: vec![],
             output: Some(PathBuf::from("out")),
@@ -549,6 +1034,14 @@ mod tests {
             no_program: false,
             verbose: 0,
             quiet: 0,
+            diag: false,
+            print_plan: false,
+            cache_only: false,
+            cache_db: None,
+            hash_threads: None,
+            scan_threads: None,
+            show_match_reasons: false,
+            save_igdb_creds: false,
         };
 
         let result = Config::try_from(cli);
@@ -573,9 +1066,12 @@ mod tests {
             dat_description_regex_exclude: None,
             dat_combine: false,
             dat_ignore_parent_clone: false,
+            list_unmatched_dats: false,
             enable_hasheous: false,
             igdb_client_id: None,
+            igdb_client_secret: None,
             igdb_token: None,
+            igdb_mode: IgdbLookupMode::BestEffort,
             patch: vec![],
             patch_exclude: vec![],
             output: Some(PathBuf::from("out")),
@@ -626,6 +1122,14 @@ mod tests {
             no_program: false,
             verbose: 0,
             quiet: 0,
+            diag: false,
+            print_plan: false,
+            cache_only: false,
+            cache_db: None,
+            hash_threads: None,
+            scan_threads: None,
+            show_match_reasons: false,
+            save_igdb_creds: false,
         };
 
         let config = Config::try_from(cli).unwrap();
@@ -650,9 +1154,12 @@ mod tests {
             dat_description_regex_exclude: None,
             dat_combine: false,
             dat_ignore_parent_clone: false,
+            list_unmatched_dats: false,
             enable_hasheous: false,
             igdb_client_id: None,
+            igdb_client_secret: None,
             igdb_token: None,
+            igdb_mode: IgdbLookupMode::BestEffort,
             patch: vec![],
             patch_exclude: vec![],
             output: None,
@@ -703,8 +1210,117 @@ mod tests {
             no_program: false,
             verbose: 0,
             quiet: 0,
+            diag: false,
+            print_plan: false,
+            cache_only: false,
+            cache_db: None,
+            hash_threads: None,
+            scan_threads: None,
+            show_match_reasons: false,
+            save_igdb_creds: false,
         };
 
+        let result = Config::try_from(cli);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn honors_print_plan_flag() {
+        fn make_cli(print_plan: bool) -> Cli {
+            Cli {
+                commands: vec![Action::Test],
+                input: vec![PathBuf::from("/tmp/file.bin")],
+                input_exclude: vec![],
+                input_checksum_quick: false,
+                input_checksum_min: Checksum::Crc32,
+                input_checksum_max: None,
+                input_checksum_archives: ArchiveChecksumMode::Auto,
+                dat: vec![],
+                dat_exclude: vec![],
+                dat_name_regex: None,
+                dat_name_regex_exclude: None,
+                dat_description_regex: None,
+                dat_description_regex_exclude: None,
+                dat_combine: false,
+                dat_ignore_parent_clone: false,
+                list_unmatched_dats: false,
+                enable_hasheous: false,
+                igdb_client_id: None,
+                igdb_client_secret: None,
+                igdb_token: None,
+                igdb_mode: IgdbLookupMode::BestEffort,
+                patch: vec![],
+                patch_exclude: vec![],
+                output: None,
+                dir_mirror: false,
+                dir_dat_mirror: false,
+                dir_dat_name: false,
+                dir_dat_description: false,
+                dir_letter: false,
+                dir_letter_count: None,
+                dir_letter_limit: None,
+                dir_letter_group: false,
+                dir_game_subdir: DirGameSubdirMode::Multiple,
+                fix_extension: FixExtensionMode::Auto,
+                overwrite: false,
+                overwrite_invalid: false,
+                move_delete_dirs: MoveDeleteDirsMode::Auto,
+                clean_exclude: vec![],
+                clean_backup: None,
+                clean_dry_run: false,
+                zip_format: ZipFormat::Torrentzip,
+                zip_exclude: None,
+                zip_dat_name: false,
+                link_mode: LinkMode::Hardlink,
+                symlink_relative: false,
+                header: None,
+                remove_headers: None,
+                trimmed_glob: None,
+                trim_scan_archives: false,
+                merge_roms: MergeMode::Fullnonmerged,
+                merge_discs: false,
+                exclude_disks: false,
+                allow_excess_sets: false,
+                allow_incomplete_sets: false,
+                filter_regex: None,
+                filter_regex_exclude: None,
+                filter_language: None,
+                filter_region: None,
+                filter_category_regex: None,
+                no_bios: false,
+                no_device: false,
+                no_unlicensed: false,
+                only_retail: false,
+                no_debug: false,
+                no_demo: false,
+                no_beta: false,
+                no_sample: false,
+                no_prototype: false,
+                no_program: false,
+                verbose: 0,
+                quiet: 0,
+                diag: false,
+                cache_only: false,
+                cache_db: None,
+                hash_threads: None,
+                scan_threads: None,
+                show_match_reasons: false,
+                save_igdb_creds: false,
+                print_plan,
+            }
+        }
+
+        let default_cfg = Config::try_from(make_cli(false)).expect("valid config");
+        assert!(!default_cfg.print_plan);
+
+        let opt_in_cfg = Config::try_from(make_cli(true)).expect("valid config");
+        assert!(opt_in_cfg.print_plan);
+    }
+
+    #[test]
+    fn errors_when_hash_threads_zero() {
+        let mut cli = make_cli(false);
+        cli.hash_threads = Some(0);
         let result = Config::try_from(cli);
         assert!(result.is_err());
     }

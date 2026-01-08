@@ -109,6 +109,7 @@ nav:
       - input/reading-archives.md
     - ROM Processing:
       - roms/matching.md
+      - roms/naming.md
       - roms/sets.md
       - roms/filtering-preferences.md
       - roms/headers.md

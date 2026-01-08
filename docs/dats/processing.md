@@ -167,4 +167,8 @@ Super Smash Bros. Melee (USA) (En,Ja) (Rev 2)
 
 ## Online lookup hints
 
-If you want unmatched DAT entries to be cross-checked against online sources, enable Hasheous and/or IGDB lookups. See the [online lookup guide](./online-lookups.md) for the required flags and what metadata is included in the execution plan.
+If you want unmatched input files to be cross-checked against online sources, enable Hasheous and/or IGDB lookups. See the [online lookup guide](./online-lookups.md) for the required flags and what metadata is included in the execution plan.
+
+Need a full dump of the DAT entries that are still missing? Add `--list-unmatched-dats` to include that data in the execution plan JSON; it is hidden by default to keep routine runs compact.
+
+Need the JSON plan for debugging or automation? Add `--print-plan` to emit the execution plan; otherwise stdout stays quiet by default.
