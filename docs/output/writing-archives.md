@@ -8,6 +8,10 @@ Igir supports creating `.zip` archives with the `igir zip` [command](../commands
 
     `.zip` archives store CRC32 information in their "central directory" which helps drastically speed up Igir's file scanning, and zip archives are easy to create without proprietary tools (e.g. 7-Zip, Rar).
 
+!!! tip
+
+  Only cartridge-based systems are zipped when you run the `zip` command. Disc-based formats (CD/DVD/UMD, etc.) stay extracted so optical images like `.iso`, `.cue/.bin`, `.gcm`, `.wbfs`, or `.chd` remain usable without an extra extraction step.
+
 See the [reading archives](../input/reading-archives.md) page for more information on archive formats and their capabilities.
 
 ## TorrentZip

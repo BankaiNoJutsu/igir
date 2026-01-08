@@ -164,3 +164,11 @@ Super Smash Bros. Melee (USA) (En,Ja) (Rev 2)
     [Retool](https://github.com/unexpectedpanda/retool) (no longer maintained) is a DAT manipulation tool that has a set of hand-maintained [parent/clone lists](https://github.com/unexpectedpanda/retool-clonelists-metadata) to supplement common DAT groups such as No-Intro and Redump. This helps cover situations such as release titles in different languages that would be hard to group together automatically.
 
     1G1R DATs made by Retool can be used seamlessly with Igir. You won't need to supply the `--single` option or any [ROM preferences](../roms/filtering-preferences.md) for Igir, as you would have already applied these preferences in Retool, but you can still supply [ROM filtering](../roms/filtering-preferences.md) options if desired.
+
+## Online lookup hints
+
+If you want unmatched input files to be cross-checked against online sources, enable Hasheous and/or IGDB lookups. See the [online lookup guide](./online-lookups.md) for the required flags and what metadata is included in the execution plan.
+
+Need a full dump of the DAT entries that are still missing? Add `--list-unmatched-dats` to include that data in the execution plan JSON; it is hidden by default to keep routine runs compact.
+
+Need the JSON plan for debugging or automation? Add `--print-plan` to emit the execution plan; otherwise stdout stays quiet by default.

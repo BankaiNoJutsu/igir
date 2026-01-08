@@ -1,55 +1,34 @@
-# Logging
+# Logging and Verbosity
 
-By default, Igir will print the following log levels:
+Igir now treats verbosity as a progressive dial that controls both how chatty the progress bars are and how much detail is printed to stderr alongside them.
 
-- `ERROR`: an unexpected error has prevented an intended [command](../commands.md)
-- `WARN`: a preventable error has prevented an intended [command](../commands.md)
+## Default (`-q`/`-v` not specified)
 
-There are additional levels of verbosity that can be enabled with the `-v` flag:
+- Stderr shows compact `[SCAN]`, `[DAT ]`, and action bars with counts only.
+- Per-record diagnostics, cache chatter, and copy/link messages stay hidden so runs remain readable.
+- The execution summary at the end is still printed so you can see what happened.
 
-- **`INFO` (`-v`): print information about actions taken.**
+## `-v` (Verbose level 1)
 
-  This includes:
+- Progress bars append the latest file name to give quick context.
+- File-by-file actions (`Copying`, `Moving`, `Linking`, etc.) and other high-level status messages are printed once per record.
+- Network/cache errors are surfaced so you know why an online lookup or cache open failed.
 
-  - Files being copied, zipped, and linked
-  - [dir2dat](../dats/dir2dat.md) files being created
-  - [Fixdat](../dats/fixdats.md) files being created
-  - Leftover input files deleted after being moved
-  - Output files being [cleaned](../output/cleaning.md) (including files skipped due to `--clean-dry-run`)
-  - [Report](../output/reporting.md) files being created
+Use this level when you want to follow along with what Igir is doing without drowning in cache details.
 
-  Usage:
+## `-vv` (Verbose level 2)
 
-  ```shell
-  igir [commands..] [options] -v
-  ```
+- Progress bars include longer (ellipsized) paths instead of just filenames.
+- Cache hits/misses, DAT/Hasheous/IGDB platform deductions, and other matching decisions are printed.
+- Helpful when you need to understand why a record matched a specific DAT entry or why a cache result was used.
 
-  This level is helpful to turn on if you want to know every action that is resulting in a file being created, modified, or deleted.
+## `-vvv` (Verbose level 3)
 
-- **`DEBUG` (`-vv`): print information about actions taken and skipped.**
+- Adds trace-level information: every network lookup, cache write, and retry is logged with hashes and algorithms.
+- Progress bars show full, untrimmed paths.
+- Required when filing detailed bug reports because it captures the entire execution story.
 
-  This includes:
+## Tips
 
-  - Everything from the `INFO` level above
-  - Files skipped from being copied, zipped, or linked because the output file exists and an [`--overwrite` option](../output/options.md#overwriting-files) wasn't provided
-  - [Fixdat](../dats/fixdats.md) files skipped from being created because all games were found
-
-  Usage:
-
-  ```shell
-  igir [commands..] [options] -vv
-  ```
-
-  This level is helpful to turn on if you want to debug why an action didn't take place.
-
-- **`TRACE` (`-vvv`): print information about actions taken, skipped, and additional information that can be helpful to debug issues.**
-
-  Usage:
-
-  ```shell
-  igir [commands..] [options] -vvv
-  ```
-
-  !!! note
-
-      Trace logs are required when submitting [bug reports](https://github.com/emmercm/igir/issues/new/choose) as they include information that can help diagnose your unique situation!
+- `--quiet` still disables progress bars entirely (useful for CI logs) regardless of verbosity.
+- Pair `-v`/`-vv`/`-vvv` with `--print-plan` if you want both the JSON execution plan and richer human-readable logs.

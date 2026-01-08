@@ -50,6 +50,24 @@ Either download the latest version for your OS from the [releases page](https://
 npx igir@latest [commands..] [options]
 ```
 
+## Rust CLI rewrite
+
+An in-progress Rust rewrite of Igir lives in [`rust/igir-rs`](./rust/igir-rs). It mirrors the same commands and options as the Node.js CLI while adding online hints for unmatched DAT entries via Hasheous and IGDB.
+
+To try it locally:
+
+```shell
+cd rust/igir-rs
+cargo run -- --help
+```
+
+Enable online DAT lookups with:
+
+- `--enable-hasheous` to query Hasheous by checksum
+- `--igdb-client-id <id>` and `--igdb-token <token>` to query IGDB by DAT description or name
+
+Prefer a single copy of each title by region/language with `--filter-region EUR,USA --filter-language EN`; this will keep a European version when present, fall back to USA, then keep any remaining English-language release and skip the rest.
+
 Here is the full help message which shows all available options and a number of common use case examples:
 
 <!-- WARN: everything below is automatically updated! Update src/modules/argumentsParser.ts instead! -->
@@ -284,7 +302,7 @@ Advanced usage:
     {type}            The type of the game (e.g. "Retail", "Demo", "Prototype")
     {category}        The DAT-defined category of the game (e.g. "Games", "Demos", "Multimedia
     ")
-    {genre}           The DAT-defined genre of the game
+    {genre}           The game's genre (IGDB/online metadata when available)
 
     {inputDirname}    The input file's dirname
     {outputBasename}  Equivalent to "{outputName}.{outputExt}"

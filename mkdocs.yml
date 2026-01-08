@@ -101,6 +101,7 @@ nav:
     - DATs:
       - dats/introduction.md
       - dats/processing.md
+      - dats/online-lookups.md
       - dats/dir2dat.md
       - dats/fixdats.md
     - File Inputs:
@@ -108,6 +109,7 @@ nav:
       - input/reading-archives.md
     - ROM Processing:
       - roms/matching.md
+      - roms/naming.md
       - roms/sets.md
       - roms/filtering-preferences.md
       - roms/headers.md
